@@ -8,27 +8,72 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Load Inter Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Load Custom Stylesheet -->
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- Custom Stylesheet -->
+    <style>
+        /* Define custom mustard color */
+        :root {
+            --color-mustard: #CA9200; /* Tailwind amber-600 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Light Grey background */
+        }
+        .mustard-bg {
+            background-color: var(--color-mustard);
+        }
+        .mustard-text {
+            color: var(--color-mustard);
+        }
+        .mustard-border {
+            border-color: var(--color-mustard);
+        }
+        /* Custom scrollbar for aesthetic */
+        /* REVERTED: Added back .issue-list */
+        .issue-list::-webkit-scrollbar, .comments-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        .issue-list::-webkit-scrollbar-thumb, .comments-list::-webkit-scrollbar-thumb {
+            background-color: #d1d5db; /* gray-300 */
+            border-radius: 4px;
+        }
+        .tab-button.active {
+            border-color: var(--color-mustard) !important;
+            color: var(--color-mustard) !important;
+        }
+        /* Style for form elements focus rings */
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--color-mustard);
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.5); /* Semi-transparent mustard ring */
+        }
+
+        /* Custom Status Styling */
+        .status-New { border-color: #3b82f6; background-color: #eff6ff; color: #1e40af; } /* Blue */
+        .status-InProgress { border-color: #f59e0b; background-color: #fffbeb; color: #92400e; } /* Yellow/Amber */
+        .status-OnHold { border-color: #ef4444; background-color: #fef2f2; color: #991b1b; } /* Red */
+        .status-Resolved { border-color: #10b981; background-color: #ebfef6; color: #065f46; } /* Green */
+
+        /* REVERTED: Removed Kanban Column Styles */
+    </style>
 </head>
 <body class="min-h-screen">
 
-    <!-- REVERTED: Main  app is now vi sible by default -->
     <div id="app" class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         
-        <!-- NEW: Logo Header -->
         <div class="mb-6">
             <!-- 
-                FIXED: The previous path "M:\..." was a local file.
-                Replaced it with a public URLto your company's logo
-                so that all users can see it.
+                UPDATED: Changed src from an external URL (which can be blocked) 
+                to a local file in your repository.
+                
+                You must upload your logo file (e.g., "logo.svg") to your 
+                GitHub repository (like you did with index.html) for this to work.
             -->
-            <img src="https://miruseating.com/wp-content/themes/mirus/images/logo.svg" alt="Mirus Aircraft Seating Logo" class="h-10 w-auto">
+            <img src="logo.svg" alt="Mirus Aircraft Seating Logo" class="h-10 w-auto">
         </div>
         
         <!-- Tab Navigation -->
         <div id="tab-navigation" class="flex border-b border-gray-300 mb-8">
-            <!-- CLEANUP: Removed inline onclick handlers -->
             <button id="tab-form" class="tab-button py-3 px-6 text-base font-semibold border-b-2 border-transparent text-gray-500 hover:border-mustard-border hover:text-mustard-text transition duration-150">
                 Log New Issue
             </button>
@@ -38,7 +83,6 @@
             <button id="tab-metrics" class="tab-button py-3 px-6 text-base font-semibold border-b-2 border-transparent text-gray-500 hover:border-mustard-border hover:text-mustard-text transition duration-150">
                 Metrics
             </button>
-            <!-- REVERTED: Removed Logout Button -->
         </div>
 
         <!-- Form View (Default) -->
@@ -56,7 +100,6 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <label for="reporterName" class="block text-sm font-medium text-gray-700">Reporter Name</label>
-                                <!-- REVERTED: Removed readOnly and bg-gray-100 -->
                                 <input type="text" id="reporterName" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
                             </div>
                             <div>
@@ -91,13 +134,11 @@
                                     <option value="" disabled selected>Select Department</option>
                                     <option value="Design">Design</option>
                                     <option value="Engineering">Engineering</option>
-                                    <!-- UPDATED: Changed Manufacturing to Production -->
                                     <option value="Production">Production</option>
                                     <option value="Quality Assurance">Quality Assurance</option>
                                     <option value="Supply Chain">Supply Chain</option>
                                     <option value="Finance">Finance</option>
                                     <option value="Sales">Sales</option>
-                                    <!-- ADDED: New department option -->
                                     <option value="Stores">Stores</option>
                                 </select>
                             </div>
@@ -127,7 +168,6 @@
 
                         <!-- Attachments (Simulated) -->
                         <div>
-                            <!-- UPDATED: Removed "(Simulated Upload)" -->
                             <label for="attachments" class="block text-sm font-medium text-gray-700">Photos / Videos</label>
                             <input type="file" id="attachments" multiple accept="image/*,video/*" class="mt-1 block w-full text-sm text-gray-500
                                 file:mr-4 file:py-2 file:px-4
@@ -152,7 +192,6 @@
             <div class="max-w-4xl mx-auto"> <!-- Centered, slightly wider -->
                 <div class="bg-white p-6 rounded-xl shadow-lg">
                     <h2 class="text-xl font-bold mb-4 mustard-text">Production Metrics</h2>
-                    <!-- UPDATED: Grid now 1-col on mobile, 2-col on desktop -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
                         <div class="p-3 bg-gray-100 rounded-lg">
                             <p id="metric-total" class="text-3xl font-bold mustard-text">0</p>
@@ -162,19 +201,14 @@
                             <p id="metric-high" class="text-3xl font-bold text-red-600">0</p>
                             <p class="text-sm text-gray-500">High Severity (Crit/High)</p>
                         </div>
-                        
-                        <!-- NEW: Issues Resolved Metric -->
                         <div class="p-3 bg-gray-100 rounded-lg">
                             <p id="metric-resolved" class="text-3xl font-bold text-green-600">0</p>
                             <p class="text-sm text-gray-500">Total Issues Resolved</p>
                         </div>
-                        
-                        <!-- NEW: Avg. Time to Resolution Metric -->
                         <div class="p-3 bg-gray-100 rounded-lg">
                             <p id="metric-mttc" class="text-3xl font-bold text-blue-600">N/A</p>
                             <p class="text-sm text-gray-500">Avg. Time to Resolution</p>
                         </div>
-
                         <div class="col-span-1 md:col-span-2 mt-4">
                             <p class="text-xs text-gray-400">Data updates in real-time.</p>
                         </div>
@@ -194,16 +228,13 @@
                         <!-- Search Input -->
                         <div class="col-span-1 md:col-span-2">
                             <label for="search-input" class="block text-xs font-medium text-gray-700 mb-1">Search (Summary/Description)</label>
-                            <!-- CLEANUP: Removed inline oninput handler -->
                             <input type="text" id="search-input" placeholder="Search issues..." 
                                 class="w-full rounded-md border-gray-300 shadow-sm p-2 text-sm border">
                         </div>
 
                         <!-- Filter by Status -->
                         <div>
-                            <!-- FIXED: Corrected 'class_label' to 'class' -->
                             <label for="filter-status" class="block text-xs font-medium text-gray-700 mb-1">Filter by Status</label>
-                            <!-- CLEANUP: Removed inline onchange handler -->
                             <select id="filter-status" 
                                 class="w-full rounded-md border-gray-300 shadow-sm p-2 text-sm border">
                                 <option value="All">All Statuses</option>
@@ -217,7 +248,6 @@
                         <!-- Sort By -->
                         <div>
                             <label for="sort-by" class="block text-xs font-medium text-gray-700 mb-1">Sort By</label>
-                            <!-- CLEANUP: Removed inline onchange handler -->
                             <select id="sort-by" 
                                 class="w-full rounded-md border-gray-300 shadow-sm p-2 text-sm border">
                                 <option value="createdAt_desc">Newest First</option>
@@ -236,7 +266,13 @@
                     </div>
                 </div>
 
-
+                <!-- 
+                    *********************************
+                    * KANBAN BOARD HTML REVERTED  *
+                    *********************************
+                -->
+                
+                <!-- REVERTED: Back to the original list view -->
                 <div class="issue-list space-y-4 max-h-[70vh] overflow-y-auto pr-2" id="issue-list-container">
                     <!-- Issues will be dynamically inserted here -->
                     <p id="loading-text" class="text-center text-gray-500 italic">Loading issues...</p>
@@ -249,6 +285,8 @@
                     <h3 class="mt-2 text-sm font-medium text-gray-900">No Issues Found</h3>
                     <p class="mt-1 text-sm text-gray-500">Get started by logging the first production issue using the form.</p>
                 </div>
+                <!-- END: Revert -->
+
             </div>
         </div>
 
@@ -258,7 +296,6 @@
     <div id="issue-modal" class="hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <!-- Background overlay -->
-            <!-- CLEANUP: Added id="modal-overlay" -->
             <div id="modal-overlay" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
 
             <!-- Modal Content -->
@@ -269,7 +306,6 @@
                         <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
                             <div class="flex justify-between items-center border-b pb-3 mb-4">
                                 <h3 class="text-2xl leading-6 font-bold text-gray-900" id="modal-summary">Issue Summary Loading...</h3>
-                                <!-- CLEANUP: Added id="modal-close-button" -->
                                 <button id="modal-close-button" class="text-gray-400 hover:text-gray-600 transition duration-150">
                                     <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -290,7 +326,6 @@
                                         <!-- Status Dropdown -->
                                         <div class="ml-4">
                                             <label for="modal-status-select" class="text-xs text-gray-500 block mb-0.5 font-medium">Status</label>
-                                            <!-- CLEANUP: Removed inline onchange handler -->
                                             <select id="modal-status-select" 
                                                     class="p-1 border text-sm rounded-md focus:ring-amber-500 focus:border-amber-500 transition duration-150">
                                                 <option value="New">New</option>
@@ -337,7 +372,6 @@
                                     </div>
                                     <div>
                                         <p class="text-gray-500">Attachments</p>
-                                        <!-- UPDATED: This is now a div to hold either text or an image -->
                                         <div id="modal-attachments">
                                             <p class="font-medium text-gray-800">None</p>
                                         </div>
@@ -348,14 +382,12 @@
                                 <div class="mt-6 border-t pt-4">
                                     <h4 class="font-semibold text-gray-700 mb-2 border-b pb-1 mustard-text">Comments</h4>
                                     <div id="comments-list" class="comments-list max-h-48 overflow-y-auto space-y-3 p-2 bg-gray-50 rounded-lg border">
-                                        <!-- Comments will load here -->
                                         <p id="no-comments" class="text-sm text-gray-500 text-center">No comments yet.</p>
                                     </div>
                                     
                                     <!-- Comment Submission Form -->
                                     <form id="comment-form" class="mt-4 p-3 bg-white border rounded-lg shadow-inner">
                                         <input type="hidden" id="current-issue-id">
-                                        <!-- REVERTED: Removed readOnly and bg-gray-100 -->
                                         <input type="text" id="commenter-name" placeholder="Your Name" required class="w-full text-sm p-2 mb-2 border rounded-md">
                                         <textarea id="comment-text" rows="2" placeholder="Add a comment..." required class="w-full text-sm p-2 border rounded-md"></textarea>
                                         <button type="submit" id="post-comment-button" class="w-full py-2 text-sm font-medium rounded-lg text-white mustard-bg hover:bg-amber-600 transition">Post Comment</button>
@@ -372,13 +404,818 @@
         </div>
     </div>
 
+    <!-- Load Application Logic -->
+    <script type="module">
+        // Import Firebase services from the CDN
+        import { 
+            initializeApp 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signInAnonymously, 
+            signInWithCustomToken, 
+            onAuthStateChanged
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, doc, addDoc, onSnapshot, collection, query, serverTimestamp, setLogLevel, 
+            updateDoc, 
+            increment,
+            deleteField
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { 
+            getStorage, 
+            ref, 
+            uploadBytes, 
+            getDownloadURL 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
-    <!-- Firebase SDKs -->
-    <!-- UPDATED: All inline code has been moved to app.js -->
-    <script type="module" src="app.js"></script>
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+          apiKey: "AIzaSyCTNU8k-vGiCzGFIZkmK3RXo4O2Ynd-RCU",
+          authDomain: "mirus-issue-tracker.firebaseapp.com",
+          projectId: "mirus-issue-tracker",
+          storageBucket: "mirus-issue-tracker.firebasestorage.app",
+          messagingSenderId: "326323118810",
+          appId: "1:326323118810:web:cb0b92f2bc0f94754dbbe3",
+          measurementId: "G-BYEBE2ZK5T"
+        };
+                
+        // Use the project ID from your config for the database path
+        const appId = firebaseConfig.projectId || 'default-app-id';
+        // We will sign in anonymously since there is no sandbox token
+        const initialAuthToken = null; 
+
+        let db;
+        let auth;
+        let storage; // NEW: Add storage variable
+        let userId = null;
+        let isAuthReady = false;
+        let commentUnsubscribe = null; 
+
+        let allIssues = []; 
+
+        const messageBox = document.getElementById('message-box');
+        const messageText = document.getElementById('message-text');
+        const form = document.getElementById('issue-form');
+        const submitButton = document.getElementById('submit-button');
+
+        // REVERTED: Added back original list/no-issue elements
+        const issueListContainer = document.getElementById('issue-list-container');
+        const noIssuesElement = document.getElementById('no-issues');
+        
+        const loadingText = document.getElementById('loading-text');
+
+        // Metric Elements
+        const metricTotal = document.getElementById('metric-total');
+        const metricHigh = document.getElementById('metric-high');
+        const metricResolved = document.getElementById('metric-resolved'); // NEW
+        const metricMttc = document.getElementById('metric-mttc'); // NEW
+
+        // Board Controls
+        const searchInput = document.getElementById('search-input');
+        const filterStatus = document.getElementById('filter-status');
+        const sortBy = document.getElementById('sort-by');
+        const issueCountDisplay = document.getElementById('issue-count');
+
+        // Modal Elements
+        const issueModal = document.getElementById('issue-modal');
+        const modalSummary = document.getElementById('modal-summary');
+        const modalSeverity = document.getElementById('modal-severity');
+        const modalLoggedDate = document.getElementById('modal-logged-date');
+        const modalProject = document.getElementById('modal-project');
+        const modalParts = document.getElementById('modal-parts');
+        const modalDescription = document.getElementById('modal-description');
+        const modalOwner = document.getElementById('modal-owner');
+        const modalDepartment = document.getElementById('modal-department');
+        const modalReporter = document.getElementById('modal-reporter');
+        const modalAttachments = document.getElementById('modal-attachments');
+        const modalUserId = document.getElementById('modal-user-id');
+        const modalDocId = document.getElementById('modal-doc-id');
+        const modalStatusSelect = document.getElementById('modal-status-select');
+
+        // Comment Elements
+        const commentsList = document.getElementById('comments-list');
+        const commentForm = document.getElementById('comment-form');
+        const currentIssueIdInput = document.getElementById('current-issue-id');
+        const commenterNameInput = document.getElementById('commenter-name');
+        const commentTextInput = document.getElementById('comment-text');
+        const postCommentButton = document.getElementById('post-comment-button');
+
+        // A variable to hold the currently opened issue's data
+        let currentOpenIssue = null;
+
+
+        // --- App Helper Functions ---
+
+        function displayMessage(text, isError = false) {
+            messageText.textContent = text;
+            messageBox.classList.remove('hidden');
+            // Remove previous error/success classes
+            messageBox.classList.remove('border-red-600', 'bg-red-50', 'text-red-800', 'border-mustard-border', 'bg-yellow-50', 'text-yellow-800');
+
+            if (isError) {
+                messageBox.classList.add('border-red-600', 'bg-red-50', 'text-red-800');
+            } else {
+                messageBox.classList.add('border-mustard-border', 'bg-yellow-50', 'text-yellow-800');
+            }
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 5000);
+        }
+
+        // --- Tab Switching Logic ---
+
+        function switchTab(view) {
+            // Get view elements
+            const formView = document.getElementById('form-view');
+            const boardView = document.getElementById('board-view');
+            const metricsView = document.getElementById('metrics-view');
+            
+            // Get tab button elements
+            const formTab = document.getElementById('tab-form');
+            const boardTab = document.getElementById('tab-board');
+            const metricsTab = document.getElementById('tab-metrics');
+
+            // Reset view classes
+            [formView, boardView, metricsView].forEach(v => v.classList.add('hidden'));
+            
+            // Reset tab button classes
+            [formTab, boardTab, metricsTab].forEach(tab => {
+                tab.classList.remove('active', 'border-mustard-border', 'text-mustard-text');
+                tab.classList.add('border-transparent', 'text-gray-500');
+            });
+
+            // Set active view
+            if (view === 'form') {
+                formView.classList.remove('hidden');
+                formTab.classList.add('active', 'border-mustard-border', 'text-mustard-text');
+            } else if (view === 'metrics') {
+                metricsView.classList.remove('hidden');
+                metricsTab.classList.add('active', 'border-mustard-border', 'text-mustard-text');
+            } else if (view === 'board') {
+                boardView.classList.remove('hidden');
+                boardTab.classList.add('active', 'border-mustard-border', 'text-mustard-text');
+            }
+        }
+
+
+        // --- Firebase Initialization and Auth ---
+
+        async function initializeFirebase() {
+            try {
+                // UPDATED: Check for the placeholder text
+                if (firebaseConfig.apiKey === "AIzaSyCTNU8k-vGiCzGFIZkmK3RXo4O2Ynd-RCU" && firebaseConfig.authDomain === "mirus-issue-tracker.firebaseapp.com") {
+                    // This is your config, so it's fine.
+                } else if (firebaseConfig.apiKey.startsWith("PASTE_YOUR_") || !firebaseConfig.apiKey) {
+                    displayMessage("Firebase config is missing. Please add your project's config object to app.js.", true);
+                    return;
+                }
+                
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                storage = getStorage(app); // NEW: Initialize Storage
+
+                // --- NEW: Attach all event listeners from JS ---
+                
+                // Tab Navigation
+                document.getElementById('tab-form').addEventListener('click', () => switchTab('form'));
+                document.getElementById('tab-board').addEventListener('click', () => switchTab('board'));
+                document.getElementById('tab-metrics').addEventListener('click', () => switchTab('metrics'));
+
+                // Modal close buttons
+                document.getElementById('modal-overlay').addEventListener('click', closeModal);
+                document.getElementById('modal-close-button').addEventListener('click', closeModal);
+
+                // Modal status change
+                document.getElementById('modal-status-select').addEventListener('change', (e) => handleStatusUpdate(e.target.value));
+                
+                // Attach app event listeners (forms, etc.)
+                commentForm.addEventListener('submit', handleCommentSubmit);
+                form.addEventListener('submit', handleIssueSubmit); // Use main issue submit handler
+                
+                // Attach control panel listeners
+                searchInput.addEventListener('input', handleControlChange);
+                filterStatus.addEventListener('change', handleControlChange);
+                sortBy.addEventListener('change', handleControlChange);
+
+                // --- NEW: Set default date and initial tab ---
+                document.getElementById('loggedDate').valueAsDate = new Date();
+                switchTab('form'); // Show the form view first
+                // --- END NEW BLOCK ---
+
+
+                // --- REVERTED: Back to original anonymous auth logic ---
+                const authUnsubscribe = onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        // --- USER IS LOGGED IN (Anonymously) ---
+                        userId = user.uid;
+                        isAuthReady = true;
+                        console.log('User authenticated (anonymously). UID:', userId);
+
+                        // Set a default name for the comment box
+                        commenterNameInput.value = `User ${userId.substring(0, 6)}`;
+
+                        // Start the app
+                        authUnsubscribe(); // Stop listening after initial auth
+                        startIssueListener();
+                    
+                    } else {
+                        // --- NO USER ---
+                        // Attempt sign in if not already done
+                        try {
+                            if (initialAuthToken) {
+                                await signInWithCustomToken(auth, initialAuthToken);
+                            } else {
+                                await signInAnonymously(auth);
+                            }
+                        } catch (error) {
+                            console.error("Authentication failed:", error);
+                            displayMessage("Failed to sign in. Cannot track issues.", true);
+                            isAuthReady = true; 
+                        }
+                    }
+                });
+
+                if (!auth.currentUser) {
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                }
+
+            } catch (error)
+            {
+                console.error("Firebase Initialization Error:", error);
+                displayMessage("Error initializing application. Please refresh.", true);
+            }
+        }
+
+        // --- Modal Functions ---
+
+        function getSeverityColor(severity) {
+            switch (severity) {
+                case 'Critical': return 'bg-red-500 text-white';
+                case 'High': return 'bg-orange-500 text-white';
+                case 'Medium': return 'bg-amber-100 text-amber-800';
+                case 'Low': return 'bg-gray-200 text-gray-700';
+                default: return 'bg-gray-100 text-gray-500';
+            }
+        }
+
+        function getStatusColor(status) {
+            // Utilizes CSS classes defined in the <style> block
+            return `status-${status.replace(/\s/g, '')} border`; 
+        }
+
+        function formatIssueDate(issue) {
+            let formattedDate = 'N/A';
+            const dateValue = issue.loggedDate || (issue.createdAt && typeof issue.createdAt.toDate === 'function' ? issue.createdAt.toDate() : null);
+            
+            if (dateValue) {
+                 const date = (typeof dateValue === 'string') ? new Date(dateValue) : dateValue;
+                 formattedDate = date.toLocaleDateString('en-US', {
+                    year: 'numeric', month: 'short', day: 'numeric'
+                });
+            }
+            return formattedDate;
+        }
+
+        function openModal(issue) {
+            // 1. Clean up old listener if one exists
+            if (commentUnsubscribe) {
+                commentUnsubscribe();
+                commentUnsubscribe = null;
+            }
+            commentsList.innerHTML = '<p class="text-sm text-gray-500 text-center">Loading comments...</p>';
+
+            // 2. Populate issue details
+            currentOpenIssue = issue;
+
+            modalSummary.textContent = issue.issueSummary || 'No Summary Provided';
+            modalSeverity.textContent = issue.severity;
+            modalSeverity.className = `px-3 py-1 text-xs font-bold rounded-full ${getSeverityColor(issue.severity)}`;
+            
+            modalStatusSelect.value = issue.status || 'New';
+
+            modalLoggedDate.textContent = formatIssueDate(issue);
+            modalProject.textContent = issue.project || 'N/A';
+            modalParts.textContent = issue.partNumbers || 'N/A';
+            modalDescription.textContent = issue.description || 'No detailed description.';
+            modalOwner.textContent = issue.owner || 'Unassigned';
+            modalDepartment.textContent = issue.department || 'N/A';
+            modalReporter.textContent = issue.reporter || 'Anonymous';
+            
+            const attachmentsContainer = document.getElementById('modal-attachments');
+            if (issue.attachments && issue.attachments.startsWith('http')) {
+                attachmentsContainer.innerHTML = `
+                    <a href="${issue.attachments}" target="_blank" rel="noopener noreferrer" 
+                       class="font-medium text-blue-600 hover:underline"
+                       title="Click to open full image">
+                        <img src="${issue.attachments}" 
+                             alt="Attachment" 
+                             class="max-w-xs max-h-40 rounded-lg border shadow-sm mt-1">
+                    </a>
+                `;
+            } else {
+                attachmentsContainer.innerHTML = `<p class="font-medium text-gray-800">${issue.attachments || 'None'}</p>`;
+            }
+            
+            modalUserId.textContent = issue.userId ? issue.userId.substring(0, 8) + '...' : 'N/A';
+            modalDocId.textContent = issue.id || 'N/A';
+            
+            currentIssueIdInput.value = issue.id;
+
+            // 4. Start the real-time comment listener for this issue
+            startCommentListener(issue.id);
+
+            // 5. Show the modal
+            issueModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden'); // Prevent background scrolling
+        }
+
+        function closeModal() {
+            if (commentUnsubscribe) {
+                commentUnsubscribe();
+                commentUnsubscribe = null;
+            }
+            issueModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            currentOpenIssue = null;
+        }
+
+        // --- Status Update Function ---
+
+        async function handleStatusUpdate(newStatus) {
+            if (!db) {
+                displayMessage("Database not ready.", true);
+                return;
+            }
+            const issueId = currentIssueIdInput.value;
+            if (!issueId) return;
+
+            const issueDocRef = doc(db, `artifacts/${appId}/public/data/aircraft_issues`, issueId);
+            
+            const updateData = {
+                status: newStatus
+            };
+
+            if (newStatus === 'Resolved') {
+                updateData.resolvedAt = serverTimestamp();
+            } 
+            else {
+                updateData.resolvedAt = deleteField();
+            }
+
+            try {
+                await updateDoc(issueDocRef, updateData);
+                displayMessage(`Status for issue ${issueId.substring(0, 6)}... updated to ${newStatus}.`, false);
+            } catch (error) {
+                console.error("Error updating status: ", error);
+                displayMessage(`Failed to update status: ${error.message}`, true);
+            }
+        }
+
+
+        // --- Comment Handling Functions ---
+
+        function getCommentCollectionRef(issueId) {
+            if (!db || !issueId) return null;
+            const issueRef = doc(db, `artifacts/${appId}/public/data/aircraft_issues`, issueId);
+            return collection(issueRef, 'comments');
+        }
+
+        function renderComment(comment) {
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'border-l-2 border-gray-300 pl-3';
+            
+            let formattedTime = 'Just now';
+            if (comment.createdAt && typeof comment.createdAt.toDate === 'function') {
+                const date = comment.createdAt.toDate();
+                formattedTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) + ', ' + date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            }
+
+            commentDiv.innerHTML = `
+                <p class="text-sm text-gray-700 break-words">${comment.text}</p>
+                <p class="text-xs text-gray-500 mt-1">
+                    <strong class="font-medium">${comment.commenterName || 'Anonymous'}</strong> 
+                    <span class="text-gray-400">| ${formattedTime}</span>
+                </p>
+            `;
+            return commentDiv;
+        }
+
+        function startCommentListener(issueId) {
+            const commentsRef = getCommentCollectionRef(issueId);
+            if (!commentsRef) return;
+
+            const q = query(commentsRef);
+
+            commentUnsubscribe = onSnapshot(q, (snapshot) => {
+                const comments = [];
+                snapshot.forEach(doc => {
+                    comments.push(doc.data());
+                });
+                
+                comments.sort((a, b) => {
+                    const timeA = a.createdAt && typeof a.createdAt.toDate === 'function' ? a.createdAt.toDate().getTime() : 0;
+                    const timeB = b.createdAt && typeof b.createdAt.toDate === 'function' ? b.createdAt.toDate().getTime() : 0;
+                    return timeA - timeB; 
+                });
+                
+
+                commentsList.innerHTML = ''; // Clear existing list
+
+                if (comments.length === 0) {
+                    const p = document.createElement('p');
+                    p.id = 'no-comments';
+                    p.className = 'text-sm text-gray-500 text-center';
+                    p.textContent = 'No comments yet.';
+                    commentsList.appendChild(p);
+                } else {
+                    comments.forEach(comment => {
+                        commentsList.appendChild(renderComment(comment));
+                    });
+                }
+            }, (error) => {
+                console.error("Error listening to comments:", error);
+                displayMessage("Failed to load real-time comments.", true);
+            });
+        }
+
+        async function handleCommentSubmit(e) {
+            e.preventDefault();
+            
+            if (!isAuthReady || !userId) {
+                displayMessage("Please wait for authentication to complete before posting a comment.", true);
+                return;
+            }
+
+            const issueId = currentIssueIdInput.value;
+            const commentsRef = getCommentCollectionRef(issueId);
+            const commentText = commentTextInput.value.trim();
+            const commenterName = commenterNameInput.value.trim();
+
+            if (!commentsRef || !issueId || !commentText || !commenterName) {
+                if(!commenterName) {
+                    displayMessage("Please enter your name to comment.", true);
+                }
+                return;
+            }
+            
+            const issueDocRef = doc(db, `artifacts/${appId}/public/data/aircraft_issues`, issueId);
+
+            postCommentButton.disabled = true;
+            postCommentButton.textContent = 'Posting...';
+
+            try {
+                const newComment = {
+                    commenterName: commenterName,
+                    text: commentText,
+                    userId: userId,
+                    createdAt: serverTimestamp()
+                };
+
+                await addDoc(commentsRef, newComment);
+                
+                await updateDoc(issueDocRef, {
+                    commentCount: increment(1),
+                    lastCommentedAt: serverTimestamp()
+                });
+
+                commentTextInput.value = ''; // Clear the text area
+            } catch (error) {
+                console.error("Error posting comment: ", error);
+                displayMessage(`Error posting comment: ${error.message}`, true);
+            } finally {
+                postCommentButton.disabled = false;
+                postCommentButton.textContent = 'Post Comment';
+            }
+        }
+
+
+        // --- Data Handling (Issues) ---
+
+        function getIssueCollectionRef() {
+            if (!db) return null;
+            return collection(db, `artifacts/${appId}/public/data/aircraft_issues`);
+        }
+
+        // Severity mapping for Priority sorting
+        const severityOrder = {
+            'Critical': 4,
+            'High': 3,
+            'Medium': 2,
+            'Low': 1
+        };
+
+        // REVERTED: Removed noIssueText helper
+
+        /**
+         * Applies the current filter, search, and sort criteria to the issue list.
+         * REVERTED: This function now populates 1 list again.
+         */
+        function filterSortAndRenderIssues() {
+            let filteredIssues = [...allIssues]; // Start with a copy of all data
+            
+            // 1. Get current controls state
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const filterValue = filterStatus.value;
+            const sortKey = sortBy.value;
+
+            // 2. Filtering
+            if (filterValue !== 'All') {
+                filteredIssues = filteredIssues.filter(issue => issue.status === filterValue);
+            }
+            
+            // 3. Searching
+            if (searchTerm) {
+                filteredIssues = filteredIssues.filter(issue => {
+                    const summary = (issue.issueSummary || '').toLowerCase();
+                    const description = (issue.description || '').toLowerCase();
+                    return summary.includes(searchTerm) || description.includes(searchTerm);
+                });
+            }
+
+            // 4. Sorting
+            filteredIssues.sort((a, b) => {
+                let valA, valB;
+
+                switch (sortKey) {
+                    case 'createdAt_desc':
+                        valA = a.createdAt && typeof a.createdAt.toDate === 'function' ? a.createdAt.toDate().getTime() : 0;
+                        valB = b.createdAt && typeof b.createdAt.toDate === 'function' ? b.createdAt.toDate().getTime() : 0;
+                        return valB - valA; // Newest first
+                    
+                    case 'createdAt_asc':
+                        valA = a.createdAt && typeof a.createdAt.toDate === 'function' ? a.createdAt.toDate().getTime() : 0;
+                        valB = b.createdAt && typeof b.createdAt.toDate === 'function' ? b.createdAt.toDate().getTime() : 0;
+                        return valA - valB; // Oldest first
+                    
+                    case 'priority_desc':
+                        valA = severityOrder[a.severity] || 0;
+                        valB = severityOrder[b.severity] || 0;
+                        return valB - valA; // Highest priority first
+                        
+                    case 'lastCommentedAt_desc':
+                        valA = a.lastCommentedAt && typeof a.lastCommentedAt.toDate === 'function' ? a.lastCommentedAt.toDate().getTime() : 0;
+                        valB = b.lastCommentedAt && typeof b.lastCommentedAt.toDate === 'function' ? b.lastCommentedAt.toDate().getTime() : 0;
+                        return valB - valA; // Most recent comment first
+
+                    default:
+                        return 0; // No change
+                }
+            });
+            
+            // 5. Update UI
+            // REVERTED: Get single list container
+            const issueListContainer = document.getElementById('issue-list-container');
+            const noIssuesElement = document.getElementById('no-issues'); // Added back
+
+            // Clear list
+            issueListContainer.innerHTML = '';
+            
+            issueCountDisplay.textContent = filteredIssues.length;
+
+            // REVERTED: Distribute issues into a single list
+            if (filteredIssues.length === 0) {
+                // If no issues at all (after filtering), show the no-issues element
+                noIssuesElement.classList.remove('hidden');
+                // Hide loading text if it's still there
+                const loading = document.getElementById('loading-text');
+                if(loading) loading.classList.add('hidden');
+            } else {
+                // Hide no-issues element
+                noIssuesElement.classList.add('hidden');
+                
+                filteredIssues.forEach(issue => {
+                    const issueCard = renderIssue(issue); // renderIssue is reusable!
+                    issueListContainer.appendChild(issueCard);
+                });
+            }
+        }
+
+        /**
+         * Generic handler for any change in the control panel.
+         */
+        function handleControlChange() {
+            filterSortAndRenderIssues();
+        }
+
+
+        function renderIssue(issue) {
+            const getSeverityColorClass = (severity) => {
+                switch (severity) {
+                    case 'Critical': return 'bg-red-500 text-white';
+                    case 'High': return 'bg-orange-500 text-white';
+                    case 'Medium': return 'bg-amber-100 text-amber-800';
+                    case 'Low': return 'bg-gray-200 text-gray-700';
+                    default: return 'bg-gray-100 text-gray-500';
+                }
+            };
+            
+            const severityClass = getSeverityColorClass(issue.severity);
+            const statusClass = getStatusColor(issue.status || 'New'); // Use helper function
+            const formattedDate = formatIssueDate(issue);
+            
+            const commentCount = issue.commentCount || 0;
+            
+            // Comment Badge HTML
+            let commentBadge = '';
+            if (commentCount > 0) {
+                commentBadge = `
+                    <span class="inline-flex items-center text-xs font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-800 ml-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                        ${commentCount}
+                    </span>
+                `;
+            }
+
+            const issueDiv = document.createElement('div');
+            // REVERTED: Kept bg-white as it looks good, but this is the original class structure
+            issueDiv.className = 'p-5 bg-white rounded-lg shadow-md transition duration-200 hover:shadow-lg hover:bg-gray-50 cursor-pointer border-l-4 ' + (issue.severity === 'Critical' ? 'border-red-600' : (issue.severity === 'High' ? 'border-orange-500' : 'border-mustard-border'));
+            
+            issueDiv.addEventListener('click', () => openModal(issue)); 
+            
+            issueDiv.innerHTML = `
+                <div class="flex justify-between items-start mb-3">
+                    <div class="flex space-x-3">
+                        <span class="px-3 py-1 text-xs font-bold rounded-full ${severityClass}">
+                            ${issue.severity}
+                        </span>
+                        <span class="px-3 py-1 text-xs font-bold rounded-full ${statusClass}">
+                            ${issue.status || 'New'}
+                        </span>
+                    </div>
+                    <span class="text-sm text-gray-500">
+                        ${formattedDate}
+                    </span>
+                </div>
+                <h3 class="text-lg font-bold text-gray-800 mb-1 flex items-center">
+                    ${issue.issueSummary || 'No Summary Provided'}
+                    ${commentBadge}
+                </h3> 
+                <p class="text-sm font-medium text-gray-700 mb-3">Affected Parts: ${issue.partNumbers || 'No Part #'}</p>
+                
+                <p class="text-sm text-gray-600 mb-4 truncate">${issue.description}</p>
+                
+                <div class="text-xs text-gray-500 space-y-1">
+                    <p><strong class="text-gray-700">Project:</strong> ${issue.project} | <strong class="text-gray-700">Owner:</strong> ${issue.owner} | <strong class="text-gray-700">Dept:</strong> ${issue.department}</p>
+                    <p><strong class="text-gray-700">Logged by:</strong> ${issue.reporter} (${issue.userId.substring(0, 8)}...)</p>
+                    <p><strong class="text-gray-700">Attachments:</strong> ${issue.attachments || 'None'}</p>
+                </div>
+            `;
+            return issueDiv;
+        }
+
+        function updateMetrics(issues) {
+            metricTotal.textContent = issues.length;
+            
+            const highCount = issues.filter(i => i.severity === 'Critical' || i.severity === 'High').length;
+            metricHigh.textContent = highCount;
+            
+            const resolvedIssues = issues.filter(i => i.status === 'Resolved');
+            metricResolved.textContent = resolvedIssues.length;
+            
+            let totalDurationMs = 0;
+            let resolvedWithTimestamps = 0;
+            
+            for (const issue of resolvedIssues) {
+                if (issue.createdAt && typeof issue.createdAt.toDate === 'function' && 
+                    issue.resolvedAt && typeof issue.resolvedAt.toDate === 'function') 
+                {
+                    const createdTime = issue.createdAt.toDate().getTime();
+                    const resolvedTime = issue.resolvedAt.toDate().getTime();
+                    const duration = resolvedTime - createdTime;
+
+                    if (duration > 0) {
+                        totalDurationMs += duration;
+                        resolvedWithTimestamps++;
+                    }
+                }
+            }
+            
+            if (resolvedWithTimestamps > 0) {
+                const avgMs = totalDurationMs / resolvedWithTimestamps;
+                const avgDays = avgMs / (1000 * 60 * 60 * 24); // Convert ms to days
+                
+                if (avgDays < 1) {
+                     const avgHours = avgMs / (1000 * 60 * 60);
+                     metricMttc.textContent = `${avgHours.toFixed(1)} Hrs`;
+                } else {
+                     metricMttc.textContent = `${avgDays.toFixed(1)} Days`;
+                }
+                
+            } else {
+                metricMttc.textContent = 'N/A';
+            }
+        }
+
+        function startIssueListener() {
+            const issuesRef = getIssueCollectionRef();
+            if (!issuesRef || !isAuthReady) return;
+
+            onSnapshot(issuesRef, (snapshot) => {
+                // KANBAN: Hide the main loading text
+                const loading = document.getElementById('loading-text');
+                if(loading) loading.classList.add('hidden');
+                
+                const fetchedIssues = [];
+                snapshot.forEach(doc => {
+                    fetchedIssues.push({ id: doc.id, ...doc.data() });
+                });
+                
+                allIssues = fetchedIssues;
+                
+                filterSortAndRenderIssues();
+
+                updateMetrics(allIssues);
+                
+            }, (error) => {
+                console.error("Error listening to issues:", error);
+                const loading = document.getElementById('loading-text');
+                if(loading) loading.textContent = 'Error loading issues.';
+                displayMessage("Failed to load real-time issues.", true);
+            });
+        }
+
+        // --- Event Listener ---
+
+        async function handleIssueSubmit(e) {
+            e.preventDefault();
+
+            if (!isAuthReady || !userId) {
+                displayMessage("Please wait for authentication to complete before logging an issue.", true);
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Logging...';
+            
+            let fileURL = 'None'; // Default value
+            
+            try {
+                const attachmentsInput = document.getElementById('attachments');
+                if (attachmentsInput.files && attachmentsInput.files.length > 0) {
+                    const file = attachmentsInput.files[0];
+                    const storagePath = `attachments/${userId}/${Date.now()}_${file.name}`;
+                    const storageRef = ref(storage, storagePath);
+
+                    submitButton.textContent = 'Uploading file...';
+                    
+                    const uploadResult = await uploadBytes(storageRef, file);
+                    
+                    fileURL = await getDownloadURL(uploadResult.ref);
+                    
+                    submitButton.textContent = 'Logging...';
+                }
+                
+                const issuesRef = getIssueCollectionRef();
+                if (!issuesRef) throw new Error("Database reference not available.");
+
+                const newIssue = {
+                    reporter: document.getElementById('reporterName').value.trim(),
+                    severity: document.getElementById('severity').value,
+                    owner: document.getElementById('owner').value.trim(),
+                    department: document.getElementById('department').value,
+                    loggedDate: document.getElementById('loggedDate').value,
+                    issueSummary: document.getElementById('issueSummary').value.trim(),
+                    description: document.getElementById('description').value.trim(),
+                    partNumbers: document.getElementById('partNumbers').value.trim(),
+                    project: document.getElementById('project').value.trim(),
+                    attachments: fileURL, // UPDATED: Save the URL or "None"
+                    userId: userId, // User who logged the problem
+                    createdAt: serverTimestamp(),
+                    commentCount: 0, // Initialize to 0 on creation
+                    status: 'New' 
+                    // resolvedAt is intentionally undefined here
+                };
+
+                await addDoc(issuesRef, newIssue);
+
+                displayMessage("Issue successfully logged! Switch tabs to see it.");
+                form.reset(); // Clear the form
+                
+                commenterNameInput.value = `User ${userId.substring(0, 6)}`;
+
+                // Manually set date to today for next entry
+                document.getElementById('loggedDate').valueAsDate = new Date();
+
+            } catch (error) {
+                console.error("Error logging document: ", error);
+                displayMessage(`Error logging issue: ${error.message}`, true);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Log Issue';
+            }
+        }
+
+        // Initialize App
+        initializeFirebase();
+    </script>
     
 </body>
-
 </html>
-
-
