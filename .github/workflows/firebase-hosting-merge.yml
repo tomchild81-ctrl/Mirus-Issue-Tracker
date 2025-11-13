@@ -1,13 +1,18 @@
+
 name: Deploy to Firebase Hosting on merge
 'on':
   push:
     branches:
-      - main # If your main branch is called 'master', change this to 'master'
+      - main # If your main branch is 'master', change this
+
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
     steps:
+      # This is STEP 1: It checks out (downloads) your code
       - uses: actions/checkout@v4
+
+      # This is STEP 2: It deploys that code to Firebase
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
